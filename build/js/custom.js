@@ -347,13 +347,10 @@ if (typeof NProgress != 'undefined') {
 		
 		
 		var arr_data1 = [
-			[gd(2012, 1, 1), 17],
-			[gd(2012, 1, 2), 74],
-			[gd(2012, 1, 3), 6],
-			[gd(2012, 1, 4), 39],
-			[gd(2012, 1, 5), 20],
-			[gd(2012, 1, 6), 85],
-			[gd(2012, 1, 7), 7]
+			['10', 17],
+			['20', 60],
+			['30', 60],
+			['40', 60]
 		];
 
 		var arr_data2 = [
@@ -443,10 +440,10 @@ if (typeof NProgress != 'undefined') {
           colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
           xaxis: {
             tickColor: "rgba(51, 51, 51, 0.06)",
-            mode: "time",
-            tickSize: [1, "day"],
+           // mode: "time",
+           // tickSize: [1, "day"],
             //tickLength: 10,
-            axisLabel: "Date",
+            axisLabel: "Number",
             axisLabelUseCanvas: true,
             axisLabelFontSizePixels: 12,
             axisLabelFontFamily: 'Verdana, Arial',
@@ -550,7 +547,7 @@ if (typeof NProgress != 'undefined') {
         if ($("#chart_plot_01").length){
 			console.log('Plot1');
 			
-			$.plot( $("#chart_plot_01"), [ arr_data1, arr_data2 ],  chart_plot_01_settings );
+			$.plot( $("#chart_plot_01"), [ arr_data1 ],  chart_plot_01_settings );
 		}
 		
 		
