@@ -4,13 +4,13 @@ session_start();
 include_once("include/DbUserConnect.php");
 include_once("layout/header.php");
 include_once("include/clsUser.php");
-$obj=  new clsUser();
+$obj=  new clsUser($connect);
 $session = $obj->userAuthendication();
 if ($session) {
     header('Location: index.php');
 }
 
-//$search_data['status']= 'OperateG1';
+//$search_data['status']= '';
 //$get_record = $obj->getDeviceData($search_data);
 //echo '<pre>';print_r($get_record);exit;
 ?>

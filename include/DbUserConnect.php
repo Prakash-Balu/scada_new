@@ -1,17 +1,21 @@
 <?php
-session_start();
-error_reporting(E_ALL);
+ini_set ( 'display_errors', 1 );
+ini_set ( 'display_startup_errors', 1 );
+error_reporting ( E_ALL );	
 
 $username = 'root';
-$password = 'mysql';
-$dbhost = 'mysqlhost';
+$password = '';
+$dbhost = 'localhost';
 $database = $_SESSION['db_name']; 
 
 
-mysql_pconnect ("$dbhost", "$username", "$password") or die ('I cannot connect to the database because: ' . mysql_error());
-mysql_select_db ("$database") or die ('I cannot connect to the database because: ' . mysql_error());
+$connect = mysqli_connect("$dbhost", "$username", "$password","$database");
 
-$connect = mysqli_connect("$dbhost", "$username", "$password", "$database", "3306");
+// Check connection
+if (mysqli_connect_errno())
+{
+echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
 
 
 

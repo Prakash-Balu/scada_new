@@ -1,16 +1,15 @@
 <?php
-session_start();
 class clsUser {
-	var $dbconn="";
-	var $device_data_f7="";
-	var $device_data_f8="";
-	var $error_data_f7="";
-	var $error_data_f8="";
-	var $lotto_pdoObj="";
-	var $num_rows=0;
+	public $dbconn="";
+	public $device_data_f7="";
+	public $device_data_f8="";
+	public $error_data_f7="";
+	public $error_data_f8="";
+	public $lotto_pdoObj="";
+	public $num_rows=0;
 
-	function clsUser($conn1) {
-		//$this->dbconn       = $dbconn;
+	function __construct($conn1) {
+		$this->dbconn       = $conn1;
 		$this->device_data_f7   = "device_data_f7"; 
 		$this->device_data_f8 = "device_data_f8";
 		$this->error_data_f7   = "error_data_f7"; 
@@ -55,20 +54,20 @@ class clsUser {
 	
 	/* Common Functions Start Here */
 	function executeQuery($SQL) {
-		$rsResult = mysql_query($SQL) or die("Could not run query".mysql_error());
+		$rsResult = mysqli_query($this->dbconn,$SQL) or die("Could not run query".mysqli_connect_error());
 		return $rsResult;
 	}
 	
 	function getLastInsertID() {
-		return mysql_insert_id();	
+		return mysqli_insert_id();	
 	}
 	
 	function getNumRows($rsResult) {
-		return mysql_num_rows($rsResult);
+		return mysqli_num_rows($rsResult);
 	}
 	
 	function insertAndGetAffectedrows() {
-		$rsResult = mysql_query($SQL) or die("Could not run query".mysql_error());
+		$rsResult = mysqli_query($this->dbconn ,$SQL) or die("Could not run query".mysqli_connect_error());
 		return mysql_affected_rows();
 	}
 	
@@ -77,9 +76,11 @@ class clsUser {
 	}	
 	
 	function fetchArrayObject($SQL) {
-		$rsResult = mysql_query($SQL) or die("Could not run query".mysql_error());	
+		$fArray =array();
+		$rsResult = mysqli_query($this->dbconn ,$SQL) or die("Could not run query".mysqli_connect_error());
+		//print_r($SQL);exit;
 		$fIndex=0;
-		while($row=mysql_fetch_object($rsResult)) {
+		while($row=mysqli_fetch_object($rsResult)) {
 			$fArray[$fIndex]=$row;
 			$fIndex++;
 		}
