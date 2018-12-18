@@ -1,11 +1,18 @@
 
 <?php 
 session_start();
-
+include_once("include/DbUserConnect.php");
 include_once("layout/header.php");
-include_once("include/clsLotto.php");
-$objLotto =  new clsLotto();
-//$get_record = $objLotto->getTodayRecord();
+include_once("include/clsUser.php");
+$obj=  new clsUser();
+$session = $obj->userAuthendication();
+if ($session) {
+    header('Location: index.php');
+}
+
+//$search_data['status']= 'OperateG1';
+//$get_record = $obj->getDeviceData($search_data);
+//echo '<pre>';print_r($get_record);exit;
 ?>
 
         <!-- page content -->

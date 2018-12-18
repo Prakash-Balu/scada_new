@@ -5,7 +5,7 @@ error_reporting(0);
 $username = 'root';
 $password = 'mysql';
 $dbhost = 'mysqlhost';
-$database = 'test'; 
+$database = 'va_master'; 
 
 
 mysql_pconnect ("$dbhost", "$username", "$password") or die ('I cannot connect to the database because: ' . mysql_error());

@@ -9,18 +9,17 @@ $username = addslashes(strtolower($_REQUEST['username']));
 $password = addslashes($_REQUEST['password']);
 if (strlen(trim($username)) > 0) {
     if (strlen(trim($password)) > 0) {
-        if (existsRecord("SELECT user_id,username FROM user WHERE username='{$username}'") == true) {
-            $row          = recordSet("SELECT user_id,password,username FROM user WHERE username='{$username}'");
-            $userpassword = $row['password'];
+        if (existsRecord("SELECT Username FROM user_master WHERE username='{$username}'") == true) {
+            $row          = recordSet("SELECT Username,Password,Parent_ID,Db_Name,User_Type_ID FROM user_master WHERE Username='{$username}'");
+            $userpassword = $row['Password'];
             if (strlen(trim($userpassword)) > 0) {
-                $Authentication = 1;
-                $qry_chkstatus  = mysql_query("SELECT user_id,username FROM user WHERE username='{$username}'");
-                if ($Authentication == '1') {
-                    if (mysql_num_rows($qry_chkstatus) > 0) {
-                        if (strcmp($userpassword, md5($password)) == 0) {
-                            $_SESSION['username'] = $username;
-                            $_SESSION['userid']   = $row['USER_ID'];
-                            $_SESSION['db_name']  = 'new';
+                $qry_chkstatus  = mysql_query("SELECT Password,Username FROM user_master WHERE Username='{$username}'");
+                   if (mysql_num_rows($qry_chkstatus) > 0) {
+                        if (strcmp($userpassword, $password) == 0) {
+				$_SESSION['username'] = $username;
+				$_SESSION['partner_id']   = $row['Parent_ID'];
+				$_SESSION['db_name']  = $row['Db_Name'];
+				$_SESSION['user_type_id']  = $row['User_Type_ID'];
                             echo "1";
                         } else {
                             echo "2";
@@ -34,12 +33,7 @@ if (strlen(trim($username)) > 0) {
             } else {
                 echo "2";
             }
-        } else {
-            echo "2";
-        }
-        /* }else{
-        echo "4";//capcha
-        }  */
+
     } else {
         echo "5";
     }

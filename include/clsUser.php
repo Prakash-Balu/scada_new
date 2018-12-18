@@ -1,17 +1,21 @@
 <?php
 session_start();
-class clsLotto {
+class clsUser {
 	var $dbconn="";
-	var $table1_name="";
-	var $table2_name="";
+	var $device_data_f7="";
+	var $device_data_f8="";
+	var $error_data_f7="";
+	var $error_data_f8="";
 	var $lotto_pdoObj="";
 	var $num_rows=0;
 
-	function clsLotto($conn1) {
+	function clsUser($conn1) {
 		//$this->dbconn       = $dbconn;
-		$this->table1_name   = "table1_name"; 
-		$this->table2_name= "table2_name";
-		$this->lotto_pdoObj = $conn1;
+		$this->device_data_f7   = "device_data_f7"; 
+		$this->device_data_f8 = "device_data_f8";
+		$this->error_data_f7   = "error_data_f7"; 
+		$this->error_data_f8 = "error_data_f8";
+	//	$this->user_pdoObj = $conn1;
 		$this->num_rows     = "num_rows";
 		$this->last_inst_id = "last_inst_id";
 	}
@@ -23,21 +27,28 @@ class clsLotto {
 	}
 	
 	function getTodayRecord() {
-		$browseSQL = "SELECT * FROM ".$this->table1_name." WHERE DATE_FORMAT(DRAW_STARTTIME,'%Y-%m-%d')=CURDATE() ORDER BY DRAW_ID DESC";
+		$browseSQL = "SELECT * FROM ".$this->device_data_f7." WHERE DATE_FORMAT(Date_S,'%Y-%m-%d')='2018-08-14' ORDER BY Record_Index DESC";
 		$resultData= $this->fetchArrayObject($browseSQL); 
 		return $resultData;			
 	}
 	
-	function viewDraw($searchArray, $limit,$offset) {
-		$browseSQL = "SELECT * FROM ".$this->table2_name." WHERE DRAW_ID!='' ";
-		if(!empty($searchArray["DRAW_NAME"]))
-			$browseSQL .= "AND DRAW_NUMBER='".$searchArray["DRAW_NAME"]."' ";
-		if(!empty($searchArray["DRAW_STATUS"]))
-			$browseSQL .= "AND DRAW_STATUS=".$searchArray["DRAW_STATUS"]." ";			
-				
-		$browseSQL .= "ORDER BY DRAW_ID DESC LIMIT $offset,$limit";
-		$rsResult  = $this->executeQuery($browseSQL);
-		$this->num_rows = $this->getNumRows($rsResult);	
+	function getDeviceData($searchArray) {
+		$where = array();
+		if(empty($searchArray)){
+		  return $where;
+		}
+		
+		if(!empty($searchArray['status'])) {
+		   $where[]  = " Status='".$searchArray['status']."'";
+		}
+
+		$where = (!empty($where) ? " WHERE ".implode(" AND ",$where) : "");
+		$browseSQL = "SELECT * FROM ".$this->device_data_f7.$where;
+		if(!empty($searchArray["start_date"]) && empty($searchArray["end_date"])) {
+		    $browseSQL .= " DATE_FORMAT(Date_S,'%Y-%m-%d') between ".$searchArray["start_date"]." AND ".$searchArray["end_date"];
+		}
+		
+		$browseSQL .= " ORDER BY Record_Index DESC";
 		$resultData     = $this->fetchArrayObject($browseSQL); 
 		return $resultData;
 	}
